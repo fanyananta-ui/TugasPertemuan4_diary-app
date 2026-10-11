@@ -6,22 +6,36 @@
 
 ## Deskripsi Aplikasi
 
-Diary App adalah aplikasi sederhana yang dibuat menggunakan React Native dan Expo untuk menampilkan catatan harian. Setiap catatan memiliki judul, tanggal, gambar, dan warna yang menggambarkan suasana hati.
+Diary App adalah aplikasi sederhana yang dibuat menggunakan React Native dan Expo untuk menampilkan catatan harian beserta gambar dan suasana hati.
 
-## Fitur Aplikasi
+## Fitur yang Dikerjakan
 
-- Menampilkan 5 catatan harian.
+- Menampilkan minimal lima catatan harian.
 - Menampilkan judul dan tanggal setiap catatan.
-- Menggunakan gambar lokal yang disimpan di folder `assets/moods`.
-- Menampilkan avatar pada bagian header.
-- Menggunakan warna border yang berbeda sesuai suasana hati.
-- Menggunakan komponen `DiaryCard` agar kode lebih rapi dan mudah dikelola.
+- Menggunakan gambar lokal dari folder `assets/moods`.
+- Menambahkan avatar pengguna pada bagian header menggunakan `Image`.
+- Memberikan variasi border kartu berdasarkan suasana hati.
+- Menggunakan komponen `DiaryCard` agar kode lebih rapi dan dapat digunakan kembali.
 
 ## Teknologi yang Digunakan
 
 - React Native
 - Expo
 - JavaScript
+
+## Cara Menjalankan Proyek
+
+1. Buka folder proyek di Visual Studio Code.
+2. Buka terminal pada folder proyek.
+3. Jalankan perintah berikut untuk memasang kebutuhan proyek:
+
+   `npm install`
+
+4. Jalankan aplikasi menggunakan perintah:
+
+   `npx expo start`
+
+5. Pindai QR code menggunakan Expo Go untuk membuka aplikasi di HP.
 
 ## Struktur Folder
 
@@ -43,15 +57,3 @@ diary-app/
 ├── package.json
 └── README.md
 ```
-
-## Cara Menjalankan Aplikasi
-
-1. Buka folder proyek di VS Code.
-2. Buka terminal pada folder proyek.
-3. Jalankan perintah `npm install`.
-4. Jalankan aplikasi menggunakan perintah `npx expo start`.
-5. Buka aplikasi melalui Expo Go untuk melihat hasilnya.
-
-## Kesimpulan
-
-Diary App dibuat untuk menerapkan penggunaan React Native dan Expo dalam membangun aplikasi sederhana. Aplikasi ini menampilkan beberapa catatan harian dengan gambar lokal, avatar, serta warna border sesuai suasana hati. Struktur kode dibuat lebih rapi dengan memisahkan komponen kartu diary dari halaman utama.
