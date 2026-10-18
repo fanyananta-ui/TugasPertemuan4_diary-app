@@ -1,129 +1,200 @@
+import React, { useMemo, useState } from 'react';
 
-import React from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  ScrollView,
+  FlatList,
+  useWindowDimensions,
 } from 'react-native';
 
-import awanImage from '../../assets/moods/awan.jpg';
-import produktifImage from '../../assets/moods/produktif.jpg';
-import senjaImage from '../../assets/moods/senja.jpg';
-import pemrogramanImage from '../../assets/moods/pemograman.jpg';
-import waktuImage from '../../assets/moods/waktu.jpg';
-
 import DiaryCard from '../components/DiaryCard';
+import DiaryDetailModal from '../components/DiaryDetailModal';
 
-const diaryEntries = [
+import {
+  COLORS,
+  SPACE,
+  TYPO,
+  BREAKPOINTS,
+} from '../styles/tokens';
+
+// Data diary menggunakan gambar lokal dari project sebelumnya.
+const DATA = [
   {
-    id: 1,
+    id: '1',
     title: 'Pagi yang Tenang',
     date: '2025-10-06',
-    preview:
-      'Hari ini aku bangun lebih pagi dan berjalan kaki 20 menit. Udara terasa sejuk...',
-    moodImage: awanImage,
+    preview: 'Menikmati suasana pagi yang tenang.',
+    body: 'Hari ini saya memulai aktivitas dengan suasana yang tenang. Saya berharap semua kegiatan berjalan dengan lancar.',
+    moodImage: require('../../assets/moods/awan.jpg'),
     moodColor: '#86CFA5',
   },
   {
-    id: 2,
+    id: '2',
     title: 'Produktif di Kampus',
     date: '2025-10-05',
-    preview:
-      'Menyelesaikan modul praktikum dan berdiskusi dengan tim. Banyak insight baru...',
-    moodImage: produktifImage,
+    preview: 'Menyelesaikan tugas dan belajar di kampus.',
+    body: 'Hari ini saya berusaha menyelesaikan tugas kuliah dan memahami materi yang diberikan. Walaupun cukup melelahkan, banyak hal yang bisa dipelajari.',
+    moodImage: require('../../assets/moods/produktifdikampus.jpg'),
     moodColor: '#8BB8F0',
   },
   {
-    id: 3,
+    id: '3',
     title: 'Senja di Taman',
     date: '2025-10-04',
-    preview:
-      'Menikmati senja sambil membaca buku favorit. Warna langit sangat indah...',
-    moodImage: senjaImage,
+    preview: 'Menikmati pemandangan sore hari.',
+    body: 'Saya menghabiskan waktu sore dengan menikmati suasana taman. Waktu sebentar untuk beristirahat membuat pikiran terasa lebih segar.',
+    moodImage: require('../../assets/moods/senja.jpg'),
     moodColor: '#D5A1E8',
   },
   {
-    id: 4,
+    id: '4',
     title: 'Belajar Pemrograman',
     date: '2025-10-03',
-    preview:
-      'Hari ini belajar React Native dan berhasil menjalankan aplikasi di HP.',
-    moodImage: pemrogramanImage,
+    preview: 'Mencoba memahami kode program.',
+    body: 'Hari ini saya belajar pemrograman dan mencoba memahami cara kerja kode. Ada beberapa bagian yang masih membingungkan, tetapi saya akan terus berlatih.',
+    moodImage: require('../../assets/moods/pemograman.jpg'),
     moodColor: '#F0C477',
   },
   {
-    id: 5,
+    id: '5',
     title: 'Waktu Bersama Teman',
     date: '2025-10-02',
-    preview:
-      'Berdiskusi dan mengerjakan tugas bersama teman-teman di kampus.',
-    moodImage: waktuImage,
+    preview: 'Mengobrol dan menghabiskan waktu bersama.',
+    body: 'Hari ini saya bisa menghabiskan waktu bersama teman-teman. Kami mengobrol dan saling berbagi cerita sehingga suasana menjadi lebih menyenangkan.',
+    moodImage: require('../../assets/moods/waktu.jpg'),
     moodColor: '#F09BAA',
+  },
+  {
+    id: '6',
+    title: 'Semangat Hari Baru',
+    date: '2025-10-07',
+    preview: 'Memulai hari dengan semangat baru.',
+    body: 'Saya mencoba menjalani hari dengan lebih semangat dan menyelesaikan kegiatan satu per satu. Semoga kebiasaan baik ini bisa terus dipertahankan.',
+    moodImage: require('../../assets/moods/semangat.jpg'),
+    moodColor: '#86CFA5',
+  },
+  {
+    id: '7',
+    title: 'Belajar Hal Baru',
+    date: '2025-10-08',
+    preview: 'Menambah pengalaman dan pengetahuan.',
+    body: 'Hari ini saya mencoba mempelajari hal baru yang bisa menambah pengetahuan. Saya sadar bahwa belajar membutuhkan proses dan latihan yang konsisten.',
+    moodImage: require('../../assets/moods/halbaru.jpg'),
+    moodColor: '#F0C477',
   },
 ];
 
 export default function DiaryListScreen() {
-  return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
+  const { width } = useWindowDimensions();
+
+  // Lebar 600 px atau lebih menggunakan dua kolom.
+  const twoCols = width >= BREAKPOINTS.tablet;
+
+  const [selected, setSelected] = useState(null);
+
+  // Mengubah key ketika jumlah kolom berubah.
+  const keyForCols = useMemo(
+    () => (twoCols ? 'grid2' : 'list1'),
+    [twoCols]
+  );
+
+  const renderItem = ({ item }) => (
+    <View
+      style={[
+        styles.itemWrap,
+        twoCols && styles.itemWrap2,
+      ]}
     >
-      <View style={styles.header}>
-        <View style={styles.headerText}>
-          <Text style={styles.heading}>Buku Harian</Text>
-          <Text style={styles.subtitle}>
-            Cerita kecil dari hari-hariku
+      <DiaryCard
+        title={item.title}
+        date={item.date}
+        preview={item.preview}
+        moodImage={item.moodImage}
+        moodColor={item.moodColor}
+        variant={twoCols ? 'grid' : 'list'}
+        onPress={() => setSelected(item)}
+      />
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Buku Harian</Text>
+
+      <Text style={styles.subtitle}>
+        Cerita kecil dari hari-hariku
+      </Text>
+
+      <FlatList
+        key={keyForCols}
+        data={DATA}
+        numColumns={twoCols ? 2 : 1}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        columnWrapperStyle={
+          twoCols ? styles.columnWrapper : undefined
+        }
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={
+          <Text style={styles.empty}>
+            Belum ada catatan harian.
           </Text>
-        </View>
+        }
+      />
 
-        <Image
-          source={{ uri: 'https://picsum.photos/seed/avatarfany/100' }}
-          style={styles.avatar}
-        />
-      </View>
-
-      {diaryEntries.map((entry) => (
-        <DiaryCard key={entry.id} entry={entry} />
-      ))}
-    </ScrollView>
+      <DiaryDetailModal
+        visible={!!selected}
+        entry={selected}
+        onClose={() => setSelected(null)}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF9F5',
+    backgroundColor: COLORS.background,
   },
-  content: {
-    padding: 16,
-  },
+
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 22,
-    paddingVertical: 8,
-  },
-  headerText: {
-    flex: 1,
-  },
-  heading: {
-    fontSize: 26,
+    fontSize: TYPO.h1,
     fontWeight: '700',
-    color: '#493B46',
+    color: COLORS.text,
+    paddingHorizontal: SPACE.l,
+    paddingTop: SPACE.l,
   },
+
   subtitle: {
-    fontSize: 13,
-    color: '#8B7D86',
-    marginTop: 4,
+    fontSize: TYPO.body,
+    color: COLORS.muted,
+    paddingHorizontal: SPACE.l,
+    marginTop: SPACE.xs,
   },
-  avatar: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    borderWidth: 2,
-    borderColor: '#F0C9D2',
+
+  listContent: {
+    padding: SPACE.l,
+    gap: SPACE.m,
+    paddingBottom: SPACE.xl,
+  },
+
+  itemWrap: {
+    width: '100%',
+  },
+
+  itemWrap2: {
+    flex: 1,
+    minWidth: 0,
+  },
+
+  columnWrapper: {
+    gap: SPACE.m,
+  },
+
+  empty: {
+    textAlign: 'center',
+    color: COLORS.muted,
+    marginTop: 40,
   },
 });

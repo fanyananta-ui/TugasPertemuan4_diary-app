@@ -5,81 +5,124 @@ import {
   Text,
   Image,
   StyleSheet,
+  Pressable,
 } from 'react-native';
 
-export default function DiaryCard({ entry }) {
+import {
+  COLORS,
+  SPACE,
+  RADIUS,
+  TYPO,
+} from '../styles/tokens';
+
+export default function DiaryCard({
+  title,
+  date,
+  preview,
+  moodImage,
+  moodColor,
+  onPress,
+  variant = 'list',
+}) {
   return (
-    <View
-      style={[
-        styles.card,
-        { borderColor: entry.moodColor },
+    <Pressable
+      onPress={onPress}
+      android_ripple={{ color: '#E5E7EB' }}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={`Entri ${title} tanggal ${date}`}
+      style={({ pressed }) => [
+        styles.pressable,
+        pressed && styles.pressed,
       ]}
     >
-      <Image
-        source={
-          entry.moodImage
-            ? entry.moodImage
-            : { uri: entry.moodUri }
-        }
-        style={styles.mood}
-        resizeMode="cover"
-      />
+      <View
+        style={[
+          styles.card,
+          { borderColor: moodColor || COLORS.border },
+          variant === 'grid' && styles.cardGrid,
+        ]}
+      >
+        <Image
+          source={moodImage}
+          style={styles.mood}
+          resizeMode="cover"
+        />
 
-      <View style={styles.cardContent}>
-        <Text style={styles.title} numberOfLines={1}>
-          {entry.title}
-        </Text>
+        <View style={styles.content}>
+          <Text style={styles.title} numberOfLines={1}>
+            {title}
+          </Text>
 
-        <Text style={styles.date}>
-          {entry.date}
-        </Text>
+          <Text style={styles.date}>
+            {date}
+          </Text>
 
-        <Text
-          style={styles.preview}
-          numberOfLines={3}
-          ellipsizeMode="tail"
-        >
-          {entry.preview}
-        </Text>
+          <Text
+            style={styles.preview}
+            numberOfLines={3}
+            ellipsizeMode="tail"
+          >
+            {preview}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  pressable: {
+    borderRadius: RADIUS.card,
+    overflow: 'hidden',
+  },
+
+  pressed: {
+    opacity: 0.85,
+  },
+
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    padding: 14,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 2,
-    borderRadius: 16,
-    marginBottom: 14,
+    gap: SPACE.m,
+    padding: SPACE.m,
+    borderWidth: 1.5,
+    borderRadius: RADIUS.card,
+    backgroundColor: COLORS.surface,
+    minHeight: 100,
   },
+
+  cardGrid: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+  },
+
   mood: {
     width: 64,
     height: 64,
-    borderRadius: 32,
-    backgroundColor: '#F4EDE8',
+    borderRadius: RADIUS.card,
+    backgroundColor: '#EEF2FF',
   },
-  cardContent: {
+
+  content: {
     flex: 1,
+    gap: SPACE.xs,
   },
+
   title: {
-    fontSize: 16,
+    fontSize: TYPO.title,
     fontWeight: '700',
-    color: '#493B46',
+    color: COLORS.text,
   },
+
   date: {
-    fontSize: 12,
-    color: '#968994',
-    marginTop: 4,
-    marginBottom: 6,
+    fontSize: TYPO.caption,
+    color: COLORS.muted,
   },
+
   preview: {
-    fontSize: 14,
+    fontSize: TYPO.body,
+    color: COLORS.text,
     lineHeight: 20,
-    color: '#635761',
   },
 });

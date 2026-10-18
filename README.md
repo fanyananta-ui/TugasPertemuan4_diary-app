@@ -6,16 +6,20 @@
 
 ## Deskripsi Aplikasi
 
-Diary App adalah aplikasi sederhana yang dibuat menggunakan React Native dan Expo untuk menampilkan catatan harian beserta gambar dan suasana hati.
+Diary App adalah aplikasi sederhana menggunakan React Native dan Expo untuk menampilkan catatan harian. Setiap catatan memiliki judul, tanggal, gambar, dan warna border yang berbeda sesuai suasana hati.
 
-## Fitur yang Dikerjakan
+## Fitur Aplikasi
 
-- Menampilkan minimal lima catatan harian.
-- Menampilkan judul dan tanggal setiap catatan.
+- Menampilkan 7 catatan harian.
+- Menampilkan judul, tanggal, gambar, dan preview catatan.
 - Menggunakan gambar lokal dari folder `assets/moods`.
-- Menambahkan avatar pengguna pada bagian header menggunakan `Image`.
-- Memberikan variasi border kartu berdasarkan suasana hati.
-- Menggunakan komponen `DiaryCard` agar kode lebih rapi dan dapat digunakan kembali.
+- Menggunakan komponen `DiaryCard`.
+- Card dapat ditekan untuk melihat detail diary.
+- Menampilkan detail diary menggunakan `DiaryDetailModal`.
+- Tampilan responsif satu kolom pada layar kecil.
+- Tampilan berubah menjadi dua kolom pada layar dengan lebar 600 px atau lebih.
+- Menggunakan warna border yang berbeda pada setiap diary.
+- Menggunakan design tokens untuk warna, jarak, ukuran teks, dan radius.
 
 ## Teknologi yang Digunakan
 
@@ -27,7 +31,7 @@ Diary App adalah aplikasi sederhana yang dibuat menggunakan React Native dan Exp
 
 1. Buka folder proyek di Visual Studio Code.
 2. Buka terminal pada folder proyek.
-3. Jalankan perintah berikut untuk memasang kebutuhan proyek:
+3. Jalankan perintah:
 
    `npm install`
 
@@ -37,6 +41,17 @@ Diary App adalah aplikasi sederhana yang dibuat menggunakan React Native dan Exp
 
 5. Pindai QR code menggunakan Expo Go untuk membuka aplikasi di HP.
 
+Untuk menjalankan versi web, gunakan:
+
+`npx expo start --web`
+
+## Responsive Layout
+
+Aplikasi menggunakan breakpoint 600 px.
+
+- Lebar layar kurang dari 600 px menggunakan satu kolom.
+- Lebar layar 600 px atau lebih menggunakan dua kolom.
+
 ## Struktur Folder
 
 ```text
@@ -44,16 +59,20 @@ diary-app/
 ├── assets/
 │   └── moods/
 │       ├── awan.jpg
+│       ├── halbaru.jpg
 │       ├── pemograman.jpg
-│       ├── produktif.jpg
+│       ├── produktifdikampus.jpg
+│       ├── semangat.jpg
 │       ├── senja.jpg
 │       └── waktu.jpg
 ├── src/
 │   ├── components/
-│   │   └── DiaryCard.js
-│   └── screens/
-│       └── DiaryListScreen.js
+│   │   ├── DiaryCard.js
+│   │   └── DiaryDetailModal.js
+│   ├── screens/
+│   │   └── DiaryListScreen.js
+│   └── styles/
+│       └── tokens.js
 ├── App.js
 ├── package.json
 └── README.md
-```
